@@ -1,0 +1,511 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>ArchiMate Diagram - IMS ArchiMate Diagram</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		NCI Business Architecture	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="ArchiMateDiagram_2w854MaAUrAy_BJ2.html" class="PageParentTitle">eRA : Application Component</a> (in <a href="ArchiMateDiagram_2w854MaAUrAy_BJ2.html" class="PageParentTitle">NCI Business Applications Archimate Diagram</a> / <a href="ArchiMateDiagram_okVQ4JaAUhQELi8s.html" class="PageParentTitle">CBIIT DOC-centric ArchiMate Diagram</a> / <a href="ArchiMateDiagram_noE6WpaAUrDqrtjK.html" class="PageParentTitle">DCEG DOC-centric ArchiMate Diagram</a> / <a href="ArchiMateDiagram_r0RSjFaAUhQEsT4w.html" class="PageParentTitle">AC Systems Diagram</a> / <a href="ArchiMateDiagram_GynGhLaAUhQOeSSE.html" class="PageParentTitle">NBS ArchiMate Diagram</a> / <a href="ArchiMateDiagram_TteeAraAUhQOeYMY.html" class="PageParentTitle">IMPACT II ArchiMate Diagram</a> / <a href="ArchiMateDiagram_kedRUraAUhQOeVPC.html" class="PageParentTitle">Status ArchiMate Diagram</a> / <a href="ArchiMateDiagram_f6iFUraAUhQOeTq5.html" class="PageParentTitle">iEdison ArchiMate Diagram</a> / <a href="ArchiMateDiagram__gF7UraAUhQOeWsG.html" class="PageParentTitle">ASSIST ArchiMate Diagram</a> / <a href="ArchiMateDiagram_tm840raAUhQOeW9N.html" class="PageParentTitle">IMS ArchiMate Diagram</a> / <a href="ArchiMateDiagram_VEyU0raAUhQOeXdI.html" class="PageParentTitle">Institutional Profile ArchiMate Diagram</a> / <a href="ArchiMateDiagram_ZX800raAUhQOeXs7.html" class="PageParentTitle">JIT ArchiMate Diagram</a> / <a href="ArchiMateDiagram_2Y5s0raAUhQOeT5Q.html" class="PageParentTitle">IAR ArchiMate Diagram</a> / <a href="ArchiMateDiagram_VkGG8raAUhQOeeDw.html" class="PageParentTitle">IDRB ArchiMate Diagram</a> / <a href="ArchiMateDiagram_tVmO8raAUhQOeRzH.html" class="PageParentTitle">OLTP ArchiMate Diagram</a> / <a href="ArchiMateDiagram_SB7_8raAUhQOeSEj.html" class="PageParentTitle">xTract ArchiMate Diagram</a> / <a href="ArchiMateDiagram_MTCB8raAUhQOeSG4.html" class="PageParentTitle">RPPR ArchiMate Diagram</a> / <a href="ArchiMateDiagram_KyDB8raAUhQOeSJH.html" class="PageParentTitle">Personal Profile ArchiMate Diagram</a> / <a href="ArchiMateDiagram_XYUh8raAUhQOeSLQ.html" class="PageParentTitle">LikeThis ArchiMate Diagram</a> / <a href="ArchiMateDiagram_mF5h8raAUhQOeSNm.html" class="PageParentTitle">eRA Web Services ArchiMate Diagram</a> / <a href="ArchiMateDiagram_inPnQbaAUhQOeVtx.html" class="PageParentTitle">nVision ArchiMate Diagram</a>)<span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="ArchiMateDiagram_2w854MaAUrAy_BJ2.html" class="PageParentTitle">IMS : Application Component</a> (in <a href="ArchiMateDiagram_2w854MaAUrAy_BJ2.html" class="PageParentTitle">NCI Business Applications Archimate Diagram</a> / <a href="ArchiMateDiagram_okVQ4JaAUhQELi8s.html" class="PageParentTitle">CBIIT DOC-centric ArchiMate Diagram</a> / <a href="ArchiMateDiagram_w0koMJaAUhQELpn4.html" class="PageParentTitle">DCEG Intramural System ArchiMate Diagram</a> / <a href="ArchiMateDiagram_f_MTLJaAUhQELuM3.html" class="PageParentTitle">DCEG Manuscript Clearance System ArchiMate Diagram</a> / <a href="ArchiMateDiagram_noE6WpaAUrDqrtjK.html" class="PageParentTitle">DCEG DOC-centric ArchiMate Diagram</a> / <a href="ArchiMateDiagram_GynGhLaAUhQOeSSE.html" class="PageParentTitle">NBS ArchiMate Diagram</a> / <a href="ArchiMateDiagram_tm840raAUhQOeW9N.html" class="PageParentTitle">IMS ArchiMate Diagram</a>)	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			ArchiMate Diagram - IMS ArchiMate Diagram		</span>
+<a onclick="javascript: showVpLink('NCI Buisness Architecture.vpp://diagram/tm840raAUhQOeW9N', 'IMS ArchiMate Diagram\nNCI Buisness Architecture.vpp://diagram/tm840raAUhQOeW9N', 'IMS ArchiMate Diagram', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|64.0|453.0|244.0|40.0|ArchiMateApplicationComponent_1zzd64aAUhQsD26G.html|ArchiMateApplicationComponent_1zzd64aAUhQsD26G.html|xl7E0raAUhQOeXAH" id="optionxl7E0raAUhQOeXAH">DCEG Manuscript Clearance System : Application Component</option>
+<option value="shape|384.0|453.0|185.0|40.0|ArchiMateApplicationComponent_tcuqI6aAU8icqlwg.html|ArchiMateApplicationComponent_tcuqI6aAU8icqlwg.html|MV7E0raAUhQOeXAR" id="optionMV7E0raAUhQOeXAR">DCEG Intramural System : Application Component</option>
+<option value="shape|30.0|374.0|578.0|163.0|ArchiMateGrouping_WGMSojqAUhQsEg6y.html|ArchiMateGrouping_WGMSojqAUhQsEg6y.html|7cgk0raAUhQOeXA1" id="option7cgk0raAUhQOeXA1">DCEG : Grouping</option>
+<option value="shape|260.0|150.0|96.0|40.0|ArchiMateApplicationComponent_Cs2j4TqAUhQsLBBu.html|ArchiMateApplicationComponent_Cs2j4TqAUhQsLBBu.html|MuTE0raAUhQOeW_1" id="optionMuTE0raAUhQOeW_1">IMS : Application Component</option>
+<option value="shape|2.0|319.0|649.0|263.0|ArchiMateGrouping_qVgA_UaAUhQsMazG.html|ArchiMateGrouping_qVgA_UaAUhQsMazG.html|uR2k0raAUhQOeXbP" id="optionuR2k0raAUhQOeXbP">NCI : Grouping</option>
+<option value="shape|202.0|106.0|213.0|105.0|ArchiMateApplicationComponent_f1pWNMaAUrCUPrMm.html|ArchiMateApplicationComponent_f1pWNMaAUrCUPrMm.html|V.pE0raAUhQOeW.1" id="optionV.pE0raAUhQOeW.1">eRA : Application Component</option>
+<option value="shape|39.0|47.0|569.0|199.0|ArchiMateGrouping_3c_xfjqAUhQsLAvX.html|ArchiMateGrouping_3c_xfjqAUhQsLAvX.html|J.pE0raAUhQOeW.y" id="optionJ.pE0raAUhQOeW.y">Grants Management : Grouping</option>
+<option value="shape|2.0|2.0|649.0|276.0|ArchiMateGrouping_hUHHrUaAUhQsMcpP.html|ArchiMateGrouping_hUHHrUaAUhQsMcpP.html|R.pE0raAUhQOeW.v" id="optionR.pE0raAUhQOeW.v">NIH : Grouping</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/IMS_ArchiMate_Diagram.png" usemap="#diagram_map" class="Image" width="655" height="586"/>
+					<map name="diagram_map">
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      Data import
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="301.0, 190.0, 301.0, 310.0, 193.0, 310.0, 193.0, 307.0, 179.0, 307.0, 179.0, 310.0, 176.0, 310.0, 176.0, 324.0, 179.0, 324.0, 179.0, 453.0, 193.0, 453.0, 193.0, 324.0, 301.0, 324.0, 301.0, 327.0, 315.0, 327.0, 315.0, 324.0, 318.0, 324.0, 318.0, 310.0, 315.0, 310.0, 315.0, 190.0" coords2="301.0, 190.0, 301.0, 310.0, 193.0, 310.0, 193.0, 307.0, 179.0, 307.0, 179.0, 310.0, 176.0, 310.0, 176.0, 324.0, 179.0, 324.0, 179.0, 453.0, 193.0, 453.0, 193.0, 324.0, 301.0, 324.0, 301.0, 327.0, 315.0, 327.0, 315.0, 324.0, 318.0, 324.0, 318.0, 310.0, 315.0, 310.0, 315.0, 190.0" shape="poly" alt="IMS to DCEG Manuscript Clearance:Flow" id="areadiagram_map_xl7E0raAUhQOeXAF_default" href="ArchiMateFlow_J5xD64aAUhQsD27Z.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="332.0, 190.0, 332.0, 310.0, 329.0, 310.0, 329.0, 324.0, 332.0, 324.0, 332.0, 327.0, 346.0, 327.0, 346.0, 324.0, 469.0, 324.0, 469.0, 453.0, 483.0, 453.0, 483.0, 324.0, 486.0, 324.0, 486.0, 310.0, 483.0, 310.0, 483.0, 307.0, 469.0, 307.0, 469.0, 310.0, 346.0, 310.0, 346.0, 190.0" coords2="332.0, 190.0, 332.0, 310.0, 329.0, 310.0, 329.0, 324.0, 332.0, 324.0, 332.0, 327.0, 346.0, 327.0, 346.0, 324.0, 469.0, 324.0, 469.0, 453.0, 483.0, 453.0, 483.0, 324.0, 486.0, 324.0, 486.0, 310.0, 483.0, 310.0, 483.0, 307.0, 469.0, 307.0, 469.0, 310.0, 346.0, 310.0, 346.0, 190.0" shape="poly" alt="IMS to DCEG Intramural System:Flow" id="areadiagram_map_MV7E0raAUhQOeXAP_default" href="ArchiMateFlow_23A_4JaAUhQELk1D.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;
+    &amp;lt;/p&amp;gt;
+    &amp;lt;table border-spacing=&amp;quot;0px&amp;quot; style=&amp;quot;border-right-style:solid;border-top-width:1px;border-bottom-color:#888888;border-left-style:solid;border-right-width:1px;border-bottom-width:1px;border-left-color:#888888;border-top-color:#888888;border-bottom-style:solid;border-right-color:#888888;border-left-width:1px;border-top-style:solid;&amp;quot;&amp;gt;
+      &amp;lt;tr style=&amp;quot;text-align:left;&amp;quot;&amp;gt;
+        &amp;lt;td class=&amp;quot;xl66&amp;quot; height=&amp;quot;128.0pt&amp;quot; style=&amp;quot;border-right-style:solid;border-top-width:1px;border-bottom-color:#888888;border-right-width:1px;border-left-color:#888888;border-right-color:#888888;padding-top:3;border-left-width:1px;padding-right:3;border-top-style:solid;padding-bottom:3;border-left-style:solid;border-bottom-width:1px;border-top-color:#888888;border-bottom-style:solid;padding-left:3;&amp;quot; width=&amp;quot;415pt&amp;quot;&amp;gt;
+          The Intramural system is intended to improve the efficiency of NCI&amp;lt;span&amp;gt;&amp;nbsp; 
+          &amp;lt;/span&amp;gt;Division by providing a platform to consistently manage the 
+          execution of business processes throughout an NCI Intramural Program.&amp;lt;span&amp;gt;&amp;nbsp; 
+          &amp;lt;/span&amp;gt;The Intramural system centrally collects and correlates 
+          fiscal and narrative project and study data in a manner that 
+          supports accurate and timely reporting and efficient strategic 
+          planning.&amp;lt;span&amp;gt;&amp;nbsp; &amp;lt;/span&amp;gt;The system allows program staff to 
+          reconcile Publications data and process NIH reporting tasks which 
+          inherently assist with compilation of critical reports without 
+          direct interaction with the scientific faculty.
+        &amp;lt;/td&amp;gt;
+      &amp;lt;/tr&amp;gt;
+    &amp;lt;/table&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="64, 453, 308, 493" coords2="64, 453, 308, 493" shape="rect" alt="DCEG Manuscript Clearance System:Application Component" id="areadiagram_map_xl7E0raAUhQOeXAH_default" href="ArchiMateApplicationComponent_1zzd64aAUhQsD26G.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','64, 453, 308, 493',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ArchiMateDiagram_f_MTLJaAUhQELuM3.html/DCEG Manuscript Clearance System ArchiMate Diagram/ArchiMateDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '64, 453, 308, 493'),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;The Intramural system is intended to improve the efficiency of NCI 
+      Division by providing a platform to consistently manage the execution of 
+      business processes throughout an NCI Intramural Program. The Intramural 
+      system centrally collects and correlates fiscal and narrative project 
+      and study data in a manner that supports accurate and timely reporting 
+      and efficient strategic planning. The system allows program staff to 
+      reconcile Publications data and process NIH reporting tasks which 
+      inherently assist with compilation of critical reports without direct 
+      interaction with the scientific faculty.
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="384, 453, 569, 493" coords2="384, 453, 569, 493" shape="rect" alt="DCEG Intramural System:Application Component" id="areadiagram_map_MV7E0raAUhQOeXAR_default" href="ArchiMateApplicationComponent_tcuqI6aAU8icqlwg.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','384, 453, 569, 493',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ArchiMateDiagram_w0koMJaAUhQELpn4.html/DCEG Intramural System ArchiMate Diagram/ArchiMateDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '384, 453, 569, 493'),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="30, 374, 608, 537" coords2="30, 374, 608, 537" shape="rect" alt="DCEG:Grouping" id="areadiagram_map_7cgk0raAUhQOeXA1_default" href="ArchiMateGrouping_WGMSojqAUhQsEg6y.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','30, 374, 608, 537',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ArchiMateDiagram_noE6WpaAUrDqrtjK.html/DCEG DOC-centric ArchiMate Diagram/ArchiMateDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '30, 374, 608, 537'),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;lt;b&amp;gt;Inclusion management System(IMS)&amp;lt;/b&amp;gt; &amp;#8211; The system enables grantees to 
+      report and update data on inclusion of women and minorities in clinical 
+      research and for grantor agency staff to monitor and manage the 
+      inclusion data.
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      System link - https://era.nih.gov/nih_and_grantor_agencies/other/ims.cfm
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="260, 150, 356, 190" coords2="260, 150, 356, 190" shape="rect" alt="IMS:Application Component" id="areadiagram_map_MuTE0raAUhQOeW_1_default" href="ArchiMateApplicationComponent_Cs2j4TqAUhQsLBBu.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','260, 150, 356, 190',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ArchiMateDiagram_tm840raAUhQOeW9N.html/IMS ArchiMate Diagram/ArchiMateDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '260, 150, 356, 190'),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="2, 319, 651, 582" coords2="2, 319, 651, 582" shape="rect" alt="NCI:Grouping" id="areadiagram_map_uR2k0raAUhQOeXbP_default" href="ArchiMateGrouping_qVgA_UaAUhQsMazG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;lt;b&amp;gt;Electronic Research Administration&amp;lt;/b&amp;gt;(ERA) &amp;#8211; Serves applications and 
+      the extramural research community. IT infrastructure to manage the 
+      receipt, processing ,review award and monitoring of research and 
+      non-research grants. Supports the full life cycle of grants 
+      administration. Also support other gov agency. eRA systems, including 
+      eRA Commons, ASSIST and IMPAC II modules. eRA integrates systems, 
+      including eRA Commons, ASSIST and IMPAC II modules
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      User guides docs - 
+      https://era.nih.gov/modules_user-guides_documentation.cfm
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      Frequently asked question - 
+      https://era.nih.gov/commons/faq_commons.cfm#I1
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="202, 106, 415, 211" coords2="202, 106, 415, 211" shape="rect" alt="eRA:Application Component" id="areadiagram_map_V.pE0raAUhQOeW.1_default" href="ArchiMateApplicationComponent_f1pWNMaAUrCUPrMm.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="39, 47, 608, 246" coords2="39, 47, 608, 246" shape="rect" alt="Grants Management:Grouping" id="areadiagram_map_J.pE0raAUhQOeW.y_default" href="ArchiMateGrouping_3c_xfjqAUhQsLAvX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 2, 651, 278" coords2="2, 2, 651, 278" shape="rect" alt="NIH:Grouping" id="areadiagram_map_R.pE0raAUhQOeW.v_default" href="ArchiMateGrouping_hUHHrUaAUhQsMcpP.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ApplicationComponent.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ApplicationComponent.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateApplicationComponent_1zzd64aAUhQsD26G.html" class="ItemLink">DCEG Manuscript Clearance System : Application Component</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <table border-spacing="0px" style="border-right-style:solid;border-top-width:1px;border-bottom-color:#888888;border-left-style:solid;border-right-width:1px;border-bottom-width:1px;border-left-color:#888888;border-top-color:#888888;border-bottom-style:solid;border-right-color:#888888;border-left-width:1px;border-top-style:solid;">
+      <tr style="text-align:left;">
+        <td class="xl66" height="128.0pt" style="border-right-style:solid;border-top-width:1px;border-bottom-color:#888888;border-right-width:1px;border-left-color:#888888;border-right-color:#888888;padding-top:3;border-left-width:1px;padding-right:3;border-top-style:solid;padding-bottom:3;border-left-style:solid;border-bottom-width:1px;border-top-color:#888888;border-bottom-style:solid;padding-left:3;" width="415pt">
+          The Intramural system is intended to improve the efficiency of NCI<span>&nbsp; 
+          </span>Division by providing a platform to consistently manage the 
+          execution of business processes throughout an NCI Intramural Program.<span>&nbsp; 
+          </span>The Intramural system centrally collects and correlates 
+          fiscal and narrative project and study data in a manner that 
+          supports accurate and timely reporting and efficient strategic 
+          planning.<span>&nbsp; </span>The system allows program staff to 
+          reconcile Publications data and process NIH reporting tasks which 
+          inherently assist with compilation of critical reports without 
+          direct interaction with the scientific faculty.
+        </td>
+      </tr>
+    </table>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ApplicationComponent.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ApplicationComponent.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateApplicationComponent_tcuqI6aAU8icqlwg.html" class="ItemLink">DCEG Intramural System : Application Component</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:12px;font-family:Dialog;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;The Intramural system is intended to improve the efficiency of NCI 
+      Division by providing a platform to consistently manage the execution of 
+      business processes throughout an NCI Intramural Program. The Intramural 
+      system centrally collects and correlates fiscal and narrative project 
+      and study data in a manner that supports accurate and timely reporting 
+      and efficient strategic planning. The system allows program staff to 
+      reconcile Publications data and process NIH reporting tasks which 
+      inherently assist with compilation of critical reports without direct 
+      interaction with the scientific faculty.
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Grouping.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Grouping.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGrouping_WGMSojqAUhQsEg6y.html" class="ItemLink">DCEG : Grouping</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ApplicationComponent.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ApplicationComponent.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateApplicationComponent_Cs2j4TqAUhQsLBBu.html" class="ItemLink">IMS : Application Component</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      <b>Inclusion management System(IMS)</b> &#8211; The system enables grantees to 
+      report and update data on inclusion of women and minorities in clinical 
+      research and for grantor agency staff to monitor and manage the 
+      inclusion data.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      System link - https://era.nih.gov/nih_and_grantor_agencies/other/ims.cfm
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Grouping.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Grouping.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGrouping_qVgA_UaAUhQsMazG.html" class="ItemLink">NCI : Grouping</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ApplicationComponent.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ApplicationComponent.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateApplicationComponent_f1pWNMaAUrCUPrMm.html" class="ItemLink">eRA : Application Component</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="margin-right:0;margin-left:0;color:#000000;font-weight:normal;font-size:11px;font-family:Courier New;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      <b>Electronic Research Administration</b>(ERA) &#8211; Serves applications and 
+      the extramural research community. IT infrastructure to manage the 
+      receipt, processing ,review award and monitoring of research and 
+      non-research grants. Supports the full life cycle of grants 
+      administration. Also support other gov agency. eRA systems, including 
+      eRA Commons, ASSIST and IMPAC II modules. eRA integrates systems, 
+      including eRA Commons, ASSIST and IMPAC II modules
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      User guides docs - 
+      https://era.nih.gov/modules_user-guides_documentation.cfm
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      Frequently asked question - 
+      https://era.nih.gov/commons/faq_commons.cfm#I1
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Grouping.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Grouping.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGrouping_3c_xfjqAUhQsLAvX.html" class="ItemLink">Grants Management : Grouping</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Grouping.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Grouping.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ArchiMateGrouping_hUHHrUaAUhQsMcpP.html" class="ItemLink">NIH : Grouping</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		NCI Business Architecture	</div>
+</body>
+</html>
